@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{B6B93B1F-C16A-439C-BED4-69F68DD08C1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicturifyRemaster.Core", "libs\Core\PicturifyRemaster.Core.csproj", "{F5D7A7A3-E337-4286-BFCE-B1A95E2C0843}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicturifyRemaster.Core.Test", "libs\Core.Test\PicturifyRemaster.Core.Test.csproj", "{C69611B9-4030-4C56-9276-B692DD30B05A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "apps", "apps", "{4679E02F-E7C1-4D06-A0A0-6C1D4956C1B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicturifyRemaster.CLI", "apps\CLI\PicturifyRemaster.CLI.csproj", "{0EE292F2-C496-422A-BF10-E8BF6F8934A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicturifyRemaster.CLI.Test", "apps\CLI.Test\PicturifyRemaster.CLI.Test.csproj", "{D8548CEB-3535-449E-B108-E087DD3725A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicturifyRemaster.PointProcessing", "libs\PointProcessing\PicturifyRemaster.PointProcessing.csproj", "{6B4899E6-813A-4EAA-80B2-7F6FD72B1D19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicturifyRemaster.PointProcessing.Test", "libs\PointProcessing.Test\PicturifyRemaster.PointProcessing.Test.csproj", "{4929A457-E087-4580-8588-06CE6CEABAB7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F5D7A7A3-E337-4286-BFCE-B1A95E2C0843}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5D7A7A3-E337-4286-BFCE-B1A95E2C0843}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5D7A7A3-E337-4286-BFCE-B1A95E2C0843}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5D7A7A3-E337-4286-BFCE-B1A95E2C0843}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C69611B9-4030-4C56-9276-B692DD30B05A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C69611B9-4030-4C56-9276-B692DD30B05A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C69611B9-4030-4C56-9276-B692DD30B05A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C69611B9-4030-4C56-9276-B692DD30B05A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EE292F2-C496-422A-BF10-E8BF6F8934A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EE292F2-C496-422A-BF10-E8BF6F8934A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EE292F2-C496-422A-BF10-E8BF6F8934A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EE292F2-C496-422A-BF10-E8BF6F8934A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8548CEB-3535-449E-B108-E087DD3725A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8548CEB-3535-449E-B108-E087DD3725A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8548CEB-3535-449E-B108-E087DD3725A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8548CEB-3535-449E-B108-E087DD3725A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B4899E6-813A-4EAA-80B2-7F6FD72B1D19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B4899E6-813A-4EAA-80B2-7F6FD72B1D19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B4899E6-813A-4EAA-80B2-7F6FD72B1D19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B4899E6-813A-4EAA-80B2-7F6FD72B1D19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4929A457-E087-4580-8588-06CE6CEABAB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4929A457-E087-4580-8588-06CE6CEABAB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4929A457-E087-4580-8588-06CE6CEABAB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4929A457-E087-4580-8588-06CE6CEABAB7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F5D7A7A3-E337-4286-BFCE-B1A95E2C0843} = {B6B93B1F-C16A-439C-BED4-69F68DD08C1D}
+		{C69611B9-4030-4C56-9276-B692DD30B05A} = {B6B93B1F-C16A-439C-BED4-69F68DD08C1D}
+		{0EE292F2-C496-422A-BF10-E8BF6F8934A5} = {4679E02F-E7C1-4D06-A0A0-6C1D4956C1B1}
+		{D8548CEB-3535-449E-B108-E087DD3725A4} = {4679E02F-E7C1-4D06-A0A0-6C1D4956C1B1}
+		{6B4899E6-813A-4EAA-80B2-7F6FD72B1D19} = {B6B93B1F-C16A-439C-BED4-69F68DD08C1D}
+		{4929A457-E087-4580-8588-06CE6CEABAB7} = {B6B93B1F-C16A-439C-BED4-69F68DD08C1D}
+	EndGlobalSection
+EndGlobal
