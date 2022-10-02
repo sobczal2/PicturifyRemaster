@@ -1,9 +1,9 @@
-﻿using PicturifyRemaster.Core.Models.Pixels;
+﻿using PicturifyRemaster.Core.Models.Images;
 using PicturifyRemaster.Core.VirtualAccess;
 
-namespace PicturifyRemaster.Core;
+namespace PicturifyRemaster.Core.Processing;
 
 public interface IProcessorBase
 {
-    public void Process(IPixel[,] pixels, IVirtualAccess virtualAccess);
+    public void Process(FastImageData fastImageData, IVirtualAccess virtualAccess);
 }

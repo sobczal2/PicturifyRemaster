@@ -1,20 +1,43 @@
 ﻿using System.Drawing;
-using PicturifyRemaster.Core.Models.Pixels;
+
+using PicturifyRemaster.Core.Models.Images;
 
 namespace PicturifyRemaster.Core.VirtualAccess;
 
 public class BlackVirtualAccess : IVirtualAccess
 {
-    private IPixel[,] _pixels;
-    private Size _size;
-    public BlackVirtualAccess(IPixel[,] pixels)
+    private FastImageData _fastImageData;
+
+    public BlackVirtualAccess(FastImageData fastImageData)
     {
-        _pixels = pixels;
-        _size = new Size(pixels.GetLength(0), pixels.GetLength(1));
+        _fastImageData = fastImageData;
     }
 
-    public IPixel GetPixel(int x, int y)
+    public float GetRed(int x, int y)
     {
-        return x < _size.Width && x >= 0 && y < _size.Width && y >= 0 ? _pixels[x, y] : new VRGBAPixel();
+        if (x < 0 || y < 0 || x >= _fastImageData.Size.Width || y >= _fastImageData.Size.Width)
+            return 0;
+        return _fastImageData.RedArray[x, y];
+    }
+
+    public float GetGreen(int x, int y)
+    {
+        if(x < 0 || y < 0 || x >= _fastImageData.Size.Width || y >= _fastImageData.Size.Width)
+            return 0;
+        return _fastImageData.RedArray[x, y];
+    }
+
+    public float GetBlue(int x, int y)
+    {
+        if(x < 0 || y < 0 || x >= _fastImageData.Size.Width || y >= _fastImageData.Size.Width)
+            return 0;
+        return _fastImageData.RedArray[x, y];
+    }
+
+    public float GetAlpha(int x, int y)
+    {
+        if(x < 0 || y < 0 || x >= _fastImageData.Size.Width || y >= _fastImageData.Size.Width)
+            return 0;
+        return _fastImageData.RedArray[x, y];
     }
 }

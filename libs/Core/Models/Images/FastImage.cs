@@ -1,8 +1,11 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using PicturifyRemaster.Core.Models.Pixels;
+
+using PicturifyRemaster.Core.Processing;
+using PicturifyRemaster.Core.Util;
 using PicturifyRemaster.Core.VirtualAccess;
 
 namespace PicturifyRemaster.Core.Models.Images;
@@ -11,42 +14,45 @@ namespace PicturifyRemaster.Core.Models.Images;
     Justification = "This is a Windows only application.")]
 public class FastImage : IFastImage
 {
-    private IPixel[,] _pixels;
-    private Size _size;
+    private FastImageData _fastImageData;
     private IVirtualAccess _virtualAccess;
+    public Size Size => _fastImageData.Size;
 
     internal FastImage(Size size)
     {
-        InitializePixels(new IPixel[size.Width, size.Height]);
+        _fastImageData = new FastImageData(size);
+        _virtualAccess = new BlackVirtualAccess(_fastImageData);
     }
 
-    internal FastImage(IPixel[,] pixels)
+    internal FastImage(FastImageData fastImageData)
     {
-        InitializePixels(pixels);
+        _fastImageData = fastImageData;
     }
 
-    internal FastImage(Image image)
+    internal FastImage(Image image) : this(image.Size)
     {
-        InitializePixels(new IPixel[image.Width,image.Height]);
+        Picturify.Instance.Log.Information($"{GetType().Name} started reading image.");
+        var sw = Stopwatch.StartNew();
         var bitmap = new Bitmap(image);
-        var widthInBytes = _size.Width * 4;
-        var arr = new byte[widthInBytes * _size.Height];
-        var bitmapData = bitmap.LockBits(new Rectangle(0, 0, _size.Width, _size.Height), ImageLockMode.ReadOnly,
+        var widthInBytes = Size.Width * 4;
+        var bitmapData = bitmap.LockBits(new Rectangle(0, 0, Size.Width, Size.Height), ImageLockMode.ReadOnly,
             bitmap.PixelFormat);
-        var ptr = bitmapData.Scan0;
-        Marshal.Copy(ptr, arr, 0, arr.Length);
-        bitmap.UnlockBits(bitmapData);
-        Parallel.For(0, _size.Height, h =>
+        unsafe
         {
-            for (var w = 0; w < _size.Width; w++)
-            {
-                _pixels![w, h] = new VRGBAPixel();
-                _pixels[w, h].Red = arr[h * widthInBytes + w * 4 + 0];
-                _pixels[w, h].Green = arr[h * widthInBytes + w * 4 + 1];
-                _pixels[w, h].Blue = arr[h * widthInBytes + w * 4 + 2];
-                _pixels[w, h].Alpha = arr[h * widthInBytes + w * 4 + 3];
-            }
-        });
+            var ptr = (byte*)bitmapData.Scan0;
+            Parallel.For(0, Size.Height, Picturify.Instance.ParallelOptions, h => {
+                for (var w = 0; w < Size.Width; w++)
+                {
+                    _fastImageData.AlphaArray[w,h] = ptr[h * widthInBytes + w * 4 + 3];
+                    _fastImageData.RedArray[w,h] = ptr[h * widthInBytes + w * 4 + 2];
+                    _fastImageData.GreenArray[w,h] = ptr[h * widthInBytes + w * 4 + 1];
+                    _fastImageData.BlueArray[w,h] = ptr[h * widthInBytes + w * 4];
+                }
+            });
+        }
+        bitmap.UnlockBits(bitmapData);
+        sw.Stop();
+        Picturify.Instance.Log.Information($"{GetType().Name} reading image took {sw.ElapsedMilliseconds} ms.");
     }
 
     internal FastImage(Stream stream) : this(Image.FromStream(stream))
@@ -59,51 +65,46 @@ public class FastImage : IFastImage
 
     public void Save(Stream stream, ImageFormat format)
     {
-        var bitmap = GetBitmap(CancellationToken.None);
+        var bitmap = GetBitmap();
         bitmap.Save(stream, format);
     }
 
     public void Save(string path)
     {
-        var bitmap = GetBitmap(CancellationToken.None);
+        var bitmap = GetBitmap();
         var format = GetImageFormat(path);
         bitmap.Save(path, format);
     }
 
     public void Execute(IProcessorBase processorBase)
     {
-        processorBase.Process(_pixels, _virtualAccess);
-    }
-    
-    private void InitializePixels(IPixel[,] pixels)
-    {
-        _pixels = pixels;
-        _size = new Size(pixels.GetLength(0), pixels.GetLength(1));
-        _virtualAccess = new BlackVirtualAccess(_pixels);
+        processorBase.Process(_fastImageData, _virtualAccess);
     }
 
-    private Bitmap GetBitmap(CancellationToken cancellationToken)
+    private Bitmap GetBitmap()
     {
-        var widthInBytes = _size.Width * 4;
-        var arr = new byte[widthInBytes * _size.Height];
-        var po = new ParallelOptions();
-        po.CancellationToken = cancellationToken;
-        Parallel.For(0, _size.Height, po, h =>
-        {
-            for (var w = 0; w < _size.Width; w++)
-            {
-                arr[h * widthInBytes + w * 4 + 0] = _pixels[w, h].ByteRed;
-                arr[h * widthInBytes + w * 4 + 1] = _pixels[w, h].ByteGreen;
-                arr[h * widthInBytes + w * 4 + 2] = _pixels[w, h].ByteBlue;
-                arr[h * widthInBytes + w * 4 + 3] = _pixels[w, h].ByteAlpha;
-            }
-        });
-        var bitmap = new Bitmap(_size.Width, _size.Height);
+        Picturify.Instance.Log.Information($"{GetType().Name} started writing image.");
+        var sw = Stopwatch.StartNew();
+        var widthInBytes = Size.Width * 4;
+        var bitmap = new Bitmap(Size.Width, Size.Height);
         var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.WriteOnly,
             bitmap.PixelFormat);
-        var ptr = bitmapData.Scan0;
-        Marshal.Copy(arr, 0, ptr, arr.Length);
+        unsafe
+        {
+            var ptr = (byte*)bitmapData.Scan0;
+            Parallel.For(0, Size.Height, Picturify.Instance.ParallelOptions, h => {
+                for (var w = 0; w < Size.Width; w++)
+                {
+                    ptr[h * widthInBytes + w * 4 + 3] = _fastImageData.AlphaArray[w, h].ToPixelByte();
+                    ptr[h * widthInBytes + w * 4 + 2] = _fastImageData.RedArray[w, h].ToPixelByte();
+                    ptr[h * widthInBytes + w * 4 + 1] = _fastImageData.GreenArray[w, h].ToPixelByte();
+                    ptr[h * widthInBytes + w * 4 + 0] = _fastImageData.BlueArray[w, h].ToPixelByte();
+                }
+            });
+        }
         bitmap.UnlockBits(bitmapData);
+        sw.Stop();
+        Picturify.Instance.Log.Information($"{GetType().Name} writing image took {sw.ElapsedMilliseconds} ms.");
         return bitmap;
     }
 

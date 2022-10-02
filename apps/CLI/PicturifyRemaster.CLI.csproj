@@ -1,21 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  
-  <PropertyGroup>
+
+    <PropertyGroup>
+
+        <OutputType>Exe</OutputType>
+
+        <ImplicitUsings>enable</ImplicitUsings>
+
+        <Nullable>enable</Nullable>
+
+        <OutputPath>../../dist/apps/CLI</OutputPath>
+
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\libs\Core\PicturifyRemaster.Core.csproj" />
+      <ProjectReference Include="..\..\libs\PointProcessing\PicturifyRemaster.PointProcessing.csproj" />
+    </ItemGroup>
     
-    <OutputType>Exe</OutputType>
-    
-    <TargetFramework>net6.0</TargetFramework>
-    
-    <ImplicitUsings>enable</ImplicitUsings>
-    
-    <Nullable>enable</Nullable>
-    
-    <OutputPath>../../dist/apps/CLI</OutputPath>
-  </PropertyGroup>
-  
-  <Target Name="CheckNxModuleBoundaries" BeforeTargets="Build">
-    
-    <Exec Command="node ../../node_modules/@nx-dotnet/core/src/tasks/check-module-boundaries.js -p CLI"/>
-    
-  </Target>
 </Project>

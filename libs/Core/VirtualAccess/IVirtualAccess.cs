@@ -1,8 +1,9 @@
-﻿using PicturifyRemaster.Core.Models.Pixels;
-
-namespace PicturifyRemaster.Core.VirtualAccess;
+﻿namespace PicturifyRemaster.Core.VirtualAccess;
 
 public interface IVirtualAccess
 {
-    IPixel GetPixel(int x, int y);
+    float GetRed(int x, int y);
+    float GetGreen(int x, int y);
+    float GetBlue(int x, int y);
+    float GetAlpha(int x, int y);
 }

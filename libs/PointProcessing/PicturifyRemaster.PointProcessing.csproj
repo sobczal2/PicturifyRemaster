@@ -1,18 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  
-  <PropertyGroup>
-    
-    <TargetFramework>net6.0</TargetFramework>
-    
-    <ImplicitUsings>enable</ImplicitUsings>
-    
-    <Nullable>enable</Nullable>
-    
-    <OutputPath>../../dist/libs/PointProcessing</OutputPath>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\Core\PicturifyRemaster.Core.csproj" />
-  </ItemGroup>
-  
+
+    <PropertyGroup>
+
+        <ImplicitUsings>enable</ImplicitUsings>
+
+        <Nullable>enable</Nullable>
+
+        <OutputPath>../../dist/libs/PointProcessing</OutputPath>
+
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Core\PicturifyRemaster.Core.csproj" />
+    </ItemGroup>
+
 </Project>

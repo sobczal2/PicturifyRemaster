@@ -1,23 +1,14 @@
 ﻿using System.Numerics;
-using PicturifyRemaster.Core;
-using PicturifyRemaster.Core.Models.Pixels;
-using PicturifyRemaster.Core.VirtualAccess;
+
+using PicturifyRemaster.Core.Models.ProcessingParams;
+using PicturifyRemaster.PointProcessing.Common;
 
 namespace PicturifyRemaster.PointProcessing.Grayscale;
 
-public class MeanGrayscaleProcessor : IProcessorBase
+public class MeanGrayscaleProcessor : PureTransformProcessorBase
 {
-    public void Process(IPixel[,] pixels, IVirtualAccess virtualAccess)
+    public MeanGrayscaleProcessor(Intensity? intensity = null, ChannelSelector? channelSelector = null) : base(new Matrix4x4(0.333f, 0.333f, 0.333f, 0, 0.333f, 0.333f, 0.333f, 0, 0.333f,
+        0.333f, 0.333f, 0, 0, 0, 0, 1), intensity, channelSelector)
     {
-        var width = pixels.GetLength(0);
-        var height = pixels.GetLength(1);
-        var transpositionMatrix = new Matrix4x4(0.333f,0.333f,0.333f,0,0.333f,0.333f,0.333f,0,0.333f,0.333f,0.333f,0,0,0,0,1);
-        Parallel.For(0, height, h =>
-        {
-            for (var w = 0; w < width; w++)
-            {
-                pixels[w, h].Transform(transpositionMatrix);
-            }
-        });
     }
 }

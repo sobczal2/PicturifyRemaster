@@ -1,5 +1,7 @@
 ﻿using System.Drawing.Imaging;
 
+using PicturifyRemaster.Core.Processing;
+
 namespace PicturifyRemaster.Core.Models.Images;
 
 public interface IFastImage
